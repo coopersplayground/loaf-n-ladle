@@ -1,0 +1,17 @@
+# Runtime data — contains customer PII and API keys, auto-created on first run
+app/data/*.db
+app/data/*.sqlite*
+app/logs/*.log
+
+# Form submissions — contain personal info
+submissions/
+
+# Environment config — secrets live here, never commit
+.env
+!.env.example
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+~$*
+*.code-workspace

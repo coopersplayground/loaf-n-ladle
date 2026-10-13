@@ -1,0 +1,45 @@
+# Loaf'n Ladle App - Apache Configuration
+
+# Protect sensitive directories
+<FilesMatch "\.(db|sqlite|log|md)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Protect data and logs directories
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /app/
+
+    # Block direct access to data and logs
+    RewriteRule ^data/ - [F,L]
+    RewriteRule ^logs/ - [F,L]
+
+    # Block direct access to PHP includes
+    RewriteRule ^config\.php$ - [F,L]
+    RewriteRule ^db\.php$ - [F,L]
+    RewriteRule ^auth\.php$ - [F,L]
+    RewriteRule ^helpers\.php$ - [F,L]
+    RewriteRule ^stripe\.php$ - [F,L]
+    RewriteRule ^layout\.php$ - [F,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# PHP settings
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Default charset
+AddDefaultCharset UTF-8
